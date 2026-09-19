@@ -1,56 +1,45 @@
-# Welcome to your Expo app 👋
+# Wild West — Duelo (Parte 1: Sensores)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Prototipo educativo para experimentar con los sensores de movimiento del
+teléfono, como base del juego de duelos del viejo oeste.
 
-## Get started
+Esta primera parte cubre solo el trabajo de la **Persona 1**: detectar el
+gesto de "desenfunde" (sacar el teléfono del bolsillo y dejarlo perpendicular)
+usando el acelerómetro y el giroscopio, con una pantalla de depuración que
+muestra las lecturas en vivo.
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Cómo correrlo
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Escanea el QR con la app **Expo Go** en tu teléfono. Los sensores **no
+funcionan en el emulador/simulador**, hace falta un dispositivo físico.
 
-### Other setup steps
+## Qué hace esta pantalla
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+- Lee `DeviceMotion` (aceleración + rotación) a ~30Hz.
+- Calcula la magnitud del vector de aceleración (incluye gravedad, en reposo
+  ronda ~9.8 m/s²) para detectar el "golpe" de sacar el teléfono.
+- Calcula el ángulo de inclinación (`rotation.beta`, convertido a grados)
+  para saber si el teléfono llegó a la posición "perpendicular".
+- Trae una **máquina de estados** simple: `reposo → movimiento → completado`
+  (o `fallido` si no se llega a tiempo), con el tiempo de reacción en
+  milisegundos.
+- Incluye **calibración manual**: toca "Calibrar reposo" con el teléfono en
+  la posición de bolsillo, y "Calibrar objetivo" con el teléfono apuntando al
+  frente. Cada persona/bolsillo es distinto, así que esto es clave para que
+  la detección tenga sentido.
+- Umbrales ajustables en vivo (magnitud, ventana de tiempo, tolerancia de
+  ángulo) para poder experimentar sin tocar código.
+- Gráfica de barras simple con el historial de magnitud reciente, para
+  visualizar el pico del movimiento.
 
-## Learn more
+## Siguientes partes (no incluidas aún)
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Persona 2**: backend/salas para conectar dos teléfonos en tiempo real y
+  sincronizar el inicio del duelo.
+- **Persona 3**: UI final, audio ambiente y sonido de inicio, integración de
+  las dos piezas anteriores.

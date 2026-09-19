@@ -41,3 +41,13 @@ example
 # generated native folders
 /ios
 /android
+
+# AI agents
+.claude/
+.cursor/
+.aider*
+.codeium/
+.copilot/
+AGENTS.md
+.windsurfrules
+.github/copilot-instructions.md

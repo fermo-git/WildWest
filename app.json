@@ -8,7 +8,10 @@
     "scheme": "wildwest",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "infoPlist": {
+        "NSMotionUsageDescription": "El juego necesita acceder al acelerómetro y giroscopio para detectar el gesto de desenfunde."
+      }
     },
     "android": {
       "adaptiveIcon": {
